@@ -4,10 +4,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import '../assets/styles/Login.css';
 const Login = props => {
@@ -24,7 +21,7 @@ const Login = props => {
             backgroundColor: theme.palette.secondary.main,
         },
         form: {
-            width: "100%", // Fix IE 11 issue.
+            width: "100%", 
             marginTop: theme.spacing(1),
             color: "white"
         },
@@ -41,12 +38,7 @@ const Login = props => {
         },
         input: {
             fontColor: 'white'
-        },
-        notchedOutline: {
-            borderWidth: "1px",
-            borderColor: "white !important"
         }
-
     }));
 
     const [state, setState] = useState({
@@ -58,29 +50,7 @@ const Login = props => {
     const [loginSpinner, setSpinner] = useState(true)
 
     useEffect(() => {
-        var DisplayName = Cookies.get("DisplayName");
-        if (DisplayName !== "")
-            window.location.reload()
-        Cookies.set("DisplayName", "");
     }, [])
-
-    const fetchDetails = () => {
-        Cookies.set("UserID", "");
-        var userID = Cookies.get("UserID");
-        axios.get(`${process.env.REACT_APP_API}/getLogin`, {
-            params: {
-                userID
-            }
-        }
-        )
-            .then(response => {
-                const UserID = response.data[0].UserID;
-                Cookies.set('UserID', UserID)
-                window.location.reload()
-
-            })
-            .catch(err => alert(err));
-    }
 
     const handleChange = (name) => (event) => {
 
@@ -90,33 +60,12 @@ const Login = props => {
     const handleSubmit = event => {
         setSpinner(false)
         event.preventDefault();
-        console.table({ Email, Password });
-        axios
-            .post(`${process.env.REACT_APP_API}/login`, { Email, Password })
-            .then(response => {
-                if (response.data !== 0) {
-                    Cookies.set("ID", response.data);
-                    fetchDetails();
-                    props.history.push({
-                        pathname: `/applicantdashboard`,
-                    });
-                }
-                else {
-                    alert('Invalid Credentials!'); 
-                    setSpinner(true)
-                    setState({...state,Password:''})
-                }
-
-            })
-            .catch(error => {
-                alert(error);
-            });
+        
     };
     const classes = useStyles();
 
-
     return (
-        <body style={{ background: '#a6f6f1' }}>
+        <body >
             <Container component="main" maxWidth="xs" >
                 <div className={classes.paper} style={{ marginTop: '10rem', height: '30rem', backgroundColor: 'white', padding: '3rem', borderRadius: '20px' }}>
                     <Avatar className={classes.avatar}>
@@ -124,33 +73,27 @@ const Login = props => {
                     </Avatar>
                     <h1 >Sign In</h1>
 
-                    <Form className={classes.form} onSubmit={handleSubmit}>
+                    <form className={classes.form} onSubmit={handleSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
                             id="outlined"
-                            label={<h5>Email*</h5>}
-                            onChange={handleChange}
+                            label="Email"
+                            required
                             type="text"
                             fullWidth
                             value={Email}
-                            InputLabelProps={{
-                                shrink: true,
-                                fontSize: 30
-                            }}
                             onChange={handleChange('Email')} />
                         <TextField
                             variant="outlined"
                             margin="normal"
                             fullWidth
                             name="password"
-                            label={<h5>Password*</h5>}
+                            label="Password"
+                            required
                             type="password"
                             id="password"
                             value={Password}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
                             autoComplete="current-password"
                             onChange={handleChange('Password')}
                         />
@@ -161,13 +104,12 @@ const Login = props => {
                                 color="primary"
                                 style={{ width: '60%', marginLeft: '20%' }}
                                 className={classes.submit}
-                                onClick={handleSubmit}
                             >
                                 Sign In
             </Button>
                             <Spinner style={{ marginLeft: '2em', color: 'black' }} hidden={loginSpinner} animation="border" />
                         </div>
-                    </Form>
+                    </form>
                 </div>
             </Container>
 
