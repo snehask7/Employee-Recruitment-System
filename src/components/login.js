@@ -8,6 +8,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
+import { Link } from 'react-router-dom';
 import '../assets/styles/Login.css';
 const Login = props => {
 
@@ -133,6 +134,8 @@ const Login = props => {
             </Button>
               <Spinner style={{ marginLeft: '2em', color: 'black' }} hidden={loginSpinner} animation="border" />
             </div>
+            <h5 style={{ color: 'black', textAlign: 'center' }}>New user? <Link to="/register"><span style={{ color: '#31326f' }}>Sign Up</span></Link></h5>
+
           </form>
         </div>
       </Container>

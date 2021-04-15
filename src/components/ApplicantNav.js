@@ -69,12 +69,14 @@ const Nav = props => {
           View Applications
         </MenuItem>
         <MenuItem>
-          <BsPersonSquare
-            onClick={() => collapse()}
-            size={23}
-            style={{ marginLeft: "3px", marginRight: "1em" }}
-          ></BsPersonSquare>
+          <Link style={{ color: 'white' }} to="/ApplicantProfile/EditProfile">
+            <BsPersonSquare
+              onClick={() => collapse()}
+              size={23}
+              style={{ marginLeft: "3px", marginRight: "1em" }}
+            ></BsPersonSquare>
           &nbsp;Profile
+          </Link>
         </MenuItem>
         <hr></hr>
         <MenuItem onClick={() => logout()}>
