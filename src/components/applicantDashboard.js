@@ -1,9 +1,37 @@
+import axios from "axios";
 import Cookies from 'js-cookie';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import Nav from "./ApplicantNav";
 
 const Dashboard = (props) => {
+
+  const fetchData = (userID) => {
+    axios
+      .all([
+        axios.get(`${process.env.REACT_APP_API}/getApplicationStatus/${userID}`)
+      ])
+      .then(
+        axios.spread((obj1) => {
+          console.log(obj1)
+          setState({
+            ...state,
+            Applications: obj1.data,
+          });
+        })
+      )
+      .catch((error) => { alert("Could not load data") });
+  };
+
+  useEffect(() => {
+    var userID = Cookies.get("userID");
+    fetchData(userID)
+  }, []);
+
+  const [state, setState] = useState({
+    applications: ""
+  })
+  const { applications } = state;
   return (
     <body style={{ backgroundColor: "#1f1e2e", color: "#f0ece2cc" }}>
       <Nav></Nav>

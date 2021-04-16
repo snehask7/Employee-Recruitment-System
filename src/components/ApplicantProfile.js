@@ -1,4 +1,6 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+import moment from 'moment';
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
@@ -46,8 +48,31 @@ const Dashboard = (props) => {
 
   const { applicantID, profileData, applicantData } = state;
 
+  const fetchProfile = (userID) => {
+    axios
+      .all([
+        axios.get(`${process.env.REACT_APP_API}/getApplicantProfile/${userID}`),
+        axios.get(`${process.env.REACT_APP_API}/getProfile/${userID}`),
+      ])
+      .then(
+        axios.spread((obj1, obj2) => {
+          setState({
+            ...state,
+            profileData: obj2.data,
+            applicantData: obj1.data,
+            applicantID: userID,
+          });
+        })
+      )
+      .catch((error) => { alert("Could not load profile") });
+  };
   useEffect(() => {
-    setPage(props.match.params.page);
+    var currpage = props.match.params.page;
+    setPage(currpage);
+    if (currpage === "EditProfile") {
+      var userID = Cookies.get("userID");
+      fetchProfile(userID);
+    }
   }, []);
 
   const handleProfileDataChange = (name, event) => {
@@ -79,18 +104,18 @@ const Dashboard = (props) => {
     var ProfileData;
     if (page === "Signup") {
       ProfileData = Profile;
-      ProfileData.profileData.userType = "applicant"
+      ProfileData.profileData.userType = "applicant";
     } else {
       ProfileData = state;
     }
     axios
       .post(`${process.env.REACT_APP_API}/updateApplicantProfile`, ProfileData)
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.status === 200) {
           if (page == "Signup") {
             alert("Registered Successfully");
-            history.push("/")
+            history.push("/");
           } else {
             alert("Profile Updated Successfully");
           }
@@ -100,7 +125,7 @@ const Dashboard = (props) => {
           } else {
             alert("Could not update profile! Please try again");
           }
-          window.location.reload()
+          window.location.reload();
         }
       })
       .catch((error) => {
@@ -109,17 +134,17 @@ const Dashboard = (props) => {
         } else {
           alert("Could not update profile! Please try again");
         }
-        window.location.reload()
+        window.location.reload();
       });
   };
 
   const SignUp = (event) => {
     event.preventDefault();
-    console.log(profileData, state)
+    console.log(profileData, state);
     axios
       .post(`${process.env.REACT_APP_API}/signup`, profileData)
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.status === 200) {
           console.log(response.data);
           var Profile = state;
@@ -127,12 +152,12 @@ const Dashboard = (props) => {
           updateProfile(event, Profile);
         } else {
           alert("Could not register! Please try again");
-          window.location.reload()
+          window.location.reload();
         }
       })
       .catch((error) => {
         alert("Could not register! Please try again");
-        window.location.reload()
+        window.location.reload();
       });
   };
 
@@ -146,14 +171,19 @@ const Dashboard = (props) => {
     >
       <form
         onSubmit={(event) => {
-          page === "Signup" ? (function () { event.preventDefault(); setTab("2"); })() : updateProfile(event);
+          page === "Signup"
+            ? (function () {
+              event.preventDefault();
+              setTab("2");
+            })()
+            : updateProfile(event);
         }}
       >
         <Form.Row>
           <Form.Group as={Col}>
             <Form.Label className="formlabel">First Name</Form.Label>
             <Form.Control
-              value={profileData.firstname}
+              value={profileData ? profileData.firstname : null}
               placeholder="Enter First Name"
               onChange={(event) => {
                 handleProfileDataChange("firstname", event);
@@ -164,7 +194,7 @@ const Dashboard = (props) => {
           <Form.Group as={Col}>
             <Form.Label className="formlabel">Last Name</Form.Label>
             <Form.Control
-              value={profileData.lastname}
+              value={profileData ? profileData.lastname : null}
               placeholder="Enter Last Name"
               onChange={(event) => {
                 handleProfileDataChange("lastname", event);
@@ -177,7 +207,7 @@ const Dashboard = (props) => {
           <Form.Group as={Col}>
             <Form.Label className="formlabel">Email</Form.Label>
             <Form.Control
-              value={profileData.email}
+              value={profileData ? profileData.email : null}
               placeholder="Enter Email"
               onChange={(event) => {
                 handleProfileDataChange("email", event);
@@ -189,7 +219,7 @@ const Dashboard = (props) => {
             <Form.Group as={Col}>
               <Form.Label className="formlabel">Password</Form.Label>
               <Form.Control
-                value={profileData.password}
+                value={profileData ? profileData.password : null}
                 type="password"
                 placeholder="Enter Password"
                 onChange={(event) => {
@@ -203,7 +233,7 @@ const Dashboard = (props) => {
           <Form.Group as={Col}>
             <Form.Label className="formlabel">Phone</Form.Label>
             <Form.Control
-              value={profileData.phone}
+              value={profileData ? profileData.phone : null}
               placeholder="Enter Phone"
               onChange={(event) => {
                 handleProfileDataChange("phone", event);
@@ -216,7 +246,7 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label className="formlabel">Date of Birth</Form.Label>
             <Form.Control
-              value={applicantData.dob}
+              value={applicantData ? moment(applicantData.dob).format("YYYY-MM-DD") : null}
               type="date"
               onChange={(event) => {
                 handleApplicantDataChange("dob", event);
@@ -228,7 +258,7 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridPassword">
             <Form.Label className="formlabel">Nationality</Form.Label>
             <Form.Control
-              value={applicantData.nationality}
+              value={applicantData ? applicantData.nationality : null}
               placeholder="Enter Nationality"
               onChange={(event) => {
                 handleApplicantDataChange("nationality", event);
@@ -241,7 +271,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} md="8" controlId="formGridEmail">
             <Form.Label className="formlabel">Street</Form.Label>
             <Form.Control
-              value={applicantData.address.street}
+              value={
+                applicantData && applicantData.address
+                  ? applicantData.address.street
+                  : null
+              }
               placeholder="Enter Street"
               onChange={(event) => {
                 handleAddressChange("street", event);
@@ -253,7 +287,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridPassword">
             <Form.Label className="formlabel">City</Form.Label>
             <Form.Control
-              value={applicantData.address.city}
+              value={
+                applicantData && applicantData.address
+                  ? applicantData.address.city
+                  : null
+              }
               placeholder="Enter City"
               onChange={(event) => {
                 handleAddressChange("city", event);
@@ -267,7 +305,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label className="formlabel">State</Form.Label>
             <Form.Control
-              value={applicantData.address.state}
+              value={
+                applicantData && applicantData.address
+                  ? applicantData.address.state
+                  : null
+              }
               placeholder="Enter State"
               onChange={(event) => {
                 handleAddressChange("state", event);
@@ -279,7 +321,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridPassword">
             <Form.Label className="formlabel">Pincode</Form.Label>
             <Form.Control
-              value={applicantData.address.pincode}
+              value={
+                applicantData && applicantData.address
+                  ? applicantData.address.pincode
+                  : null
+              }
               placeholder="Enter Pincode"
               onChange={(event) => {
                 handleAddressChange("pincode", event);
@@ -290,7 +336,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridPassword">
             <Form.Label className="formlabel">Country</Form.Label>
             <Form.Control
-              value={applicantData.address.country}
+              value={
+                applicantData && applicantData.address
+                  ? applicantData.address.country
+                  : null
+              }
               placeholder="Enter Country"
               onChange={(event) => {
                 handleAddressChange("country", event);
@@ -311,7 +361,7 @@ const Dashboard = (props) => {
           )}
         </div>
       </form>
-    </Card.Body >
+    </Card.Body>
   );
 
   const EducationInfo = (
@@ -324,14 +374,19 @@ const Dashboard = (props) => {
     >
       <form
         onSubmit={(event) => {
-          page === "Signup" ? (function () { event.preventDefault(); setTab("3"); })() : updateProfile(event);
+          page === "Signup"
+            ? (function () {
+              event.preventDefault();
+              setTab("3");
+            })()
+            : updateProfile(event);
         }}
       >
         <Form.Row>
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label className="formlabel">10th Percentage</Form.Label>
             <Form.Control
-              value={applicantData.percent10}
+              value={applicantData ? applicantData.percent10 : null}
               placeholder="Enter 10th Marks"
               onChange={(event) => {
                 handleApplicantDataChange("percent10", event);
@@ -343,7 +398,7 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridPassword">
             <Form.Label className="formlabel">12th Percentage</Form.Label>
             <Form.Control
-              value={applicantData.percent12}
+              value={applicantData ? applicantData.percent12 : null}
               placeholder="Enter 12th Marks"
               onChange={(event) => {
                 handleApplicantDataChange("percent12", event);
@@ -356,7 +411,11 @@ const Dashboard = (props) => {
         <Form.Group>
           <Form.Label className="formlabel">Degree Type</Form.Label>
           <Form.Control
-            value={applicantData.gradDetails.degreeType}
+            value={
+              applicantData && applicantData.gradDetails
+                ? applicantData.gradDetails.degreeType
+                : null
+            }
             onChange={(event) => {
               handleGradChange("degreeType", event);
             }}
@@ -368,7 +427,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label className="formlabel">Year of Pass Out</Form.Label>
             <Form.Control
-              value={applicantData.gradDetails.yearPassOut}
+              value={
+                applicantData && applicantData.gradDetails
+                  ? applicantData.gradDetails.yearPassOut
+                  : null
+              }
               placeholder="Enter Year of Pass Out"
               onChange={(event) => {
                 handleGradChange("yearPassOut", event);
@@ -380,7 +443,11 @@ const Dashboard = (props) => {
           <Form.Group as={Col} controlId="formGridPassword">
             <Form.Label className="formlabel">CGPA</Form.Label>
             <Form.Control
-              value={applicantData.gradDetails.cgpa}
+              value={
+                applicantData && applicantData.gradDetails
+                  ? applicantData.gradDetails.cgpa
+                  : null
+              }
               onChange={(event) => {
                 handleGradChange("cgpa", event);
               }}
@@ -393,7 +460,11 @@ const Dashboard = (props) => {
         <Form.Group>
           <Form.Label className="formlabel">University</Form.Label>
           <Form.Control
-            value={applicantData.gradDetails.university}
+            value={
+              applicantData && applicantData.gradDetails
+                ? applicantData.gradDetails.university
+                : null
+            }
             placeholder="Enter University"
             onChange={(event) => {
               handleGradChange("university", event);
@@ -405,7 +476,11 @@ const Dashboard = (props) => {
         <Form.Group>
           <Form.Label className="formlabel">Country</Form.Label>
           <Form.Control
-            value={applicantData.gradDetails.country}
+            value={
+              applicantData && applicantData.gradDetails
+                ? applicantData.gradDetails.country
+                : null
+            }
             placeholder="Enter Country"
             onChange={(event) => {
               handleGradChange("country", event);
@@ -440,13 +515,19 @@ const Dashboard = (props) => {
     >
       <form
         onSubmit={(event) => {
-          page === "Signup" ? (function () { event.preventDefault(); setDisableSubmit(true); SignUp(event) })() : updateProfile(event);
+          page === "Signup"
+            ? (function () {
+              event.preventDefault();
+              setDisableSubmit(true);
+              SignUp(event);
+            })()
+            : updateProfile(event);
         }}
       >
         <Form.Group as={Col} controlId="formGridEmail">
           <Form.Label className="formlabel">Preffered Job Location</Form.Label>
           <Form.Control
-            value={applicantData.locationPref}
+            value={applicantData ? applicantData.locationPref : null}
             placeholder="Enter preferred location"
             onChange={(event) => {
               handleApplicantDataChange("locationPref", event);
@@ -458,7 +539,7 @@ const Dashboard = (props) => {
         <Form.Group as={Col} controlId="formGridPassword">
           <Form.Label className="formlabel">Resume Link</Form.Label>
           <Form.Control
-            value={applicantData.resumeLink}
+            value={applicantData ? applicantData.resumeLink : null}
             placeholder="Paste the google drive link"
             onChange={(event) => {
               handleApplicantDataChange("resumeLink", event);
@@ -493,6 +574,7 @@ const Dashboard = (props) => {
           marginBottom: "3em",
         }}
       >
+
         <Card
           style={{
             backgroundColor: "f4f9f9",
@@ -502,8 +584,8 @@ const Dashboard = (props) => {
           }}
         >
           <div
-            style={{ marginLeft: "17vw", marginBottom: "-6em" }}
-            className="p-5 d-flex align-items-center headingtabs"
+            style={{ marginBottom: "-6em" }}
+            className="p-5 d-flex center headingtabs"
           >
             <b>About</b>
             <div style={{ width: "10vw" }}></div>
@@ -512,13 +594,11 @@ const Dashboard = (props) => {
             <b> Job Info</b>
           </div>
           <div
-            style={{ marginLeft: "17vw" }}
-            className="p-5 d-flex align-items-center"
+            className="p-5 d-flex center"
           >
             <div
               onClick={() => {
-                page === "EditProfile" ?
-                  setTab("1") : setTab(tab)
+                page === "EditProfile" ? setTab("1") : setTab(tab);
               }}
               className={tab === "1" ? "filledcircle" : "circle"}
             >
@@ -527,8 +607,7 @@ const Dashboard = (props) => {
             <div className="line-btw"></div>
             <div
               onClick={() => {
-                page === "EditProfile" ?
-                  setTab("2") : setTab(tab)
+                page === "EditProfile" ? setTab("2") : setTab(tab);
               }}
               className={tab === "2" ? "filledcircle" : "circle"}
             >
@@ -537,8 +616,7 @@ const Dashboard = (props) => {
             <div className="line-btw"></div>
             <div
               onClick={() => {
-                page === "EditProfile" ?
-                  setTab("3") : setTab(tab)
+                page === "EditProfile" ? setTab("3") : setTab(tab);
               }}
               className={tab == "3" ? "filledcircle" : "circle"}
             >

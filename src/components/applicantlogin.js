@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { Link } from 'react-router-dom';
 import '../assets/styles/Login.css';
@@ -52,8 +52,6 @@ const Login = props => {
   const { email, password } = state;
   const [loginSpinner, setSpinner] = useState(true)
 
-  useEffect(() => {
-  }, [])
 
   const handleChange = (name) => (event) => {
 
