@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { Link } from 'react-router-dom';
 import '../assets/styles/Login.css';
@@ -52,8 +52,6 @@ const Login = props => {
   const { email, password } = state;
   const [loginSpinner, setSpinner] = useState(true)
 
-  useEffect(() => {
-  }, [])
 
   const handleChange = (name) => (event) => {
 
@@ -63,8 +61,9 @@ const Login = props => {
   const handleSubmit = event => {
     setSpinner(false)
     event.preventDefault();
+    var userType = "applicant";
     axios
-      .post(`${process.env.REACT_APP_API}/login`, { email, password })
+      .post(`${process.env.REACT_APP_API}/login`, state)
       .then(response => {
         if (response.status == 200) {
           console.log(response.data)
@@ -134,7 +133,10 @@ const Login = props => {
             </Button>
               <Spinner style={{ marginLeft: '2em', color: 'black' }} hidden={loginSpinner} animation="border" />
             </div>
-            <h5 style={{ color: 'black', textAlign: 'center' }}>New user? <Link to="/register"><span style={{ color: '#31326f' }}>Sign Up</span></Link></h5>
+            <h5 style={{ color: 'black', textAlign: 'center' }}>New user? <Link to={{
+              pathname: '/ApplicantProfile/Signup',
+              page: 'Signup'
+            }} > <span style={{ color: '#31326f' }}>Sign Up</span></Link></h5>
 
           </form>
         </div>

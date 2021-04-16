@@ -2,10 +2,13 @@ import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+import { useHistory } from "react-router-dom";
 import '../assets/styles/Login.css';
+
 const Register = props => {
+  let history = useHistory();
 
   const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,14 +39,14 @@ const Register = props => {
   }));
 
   const [state, setState] = useState({
-    Email: '',
-    Password: '',
-    FirstName: '',
-    LastName: '',
-    Phone: ''
+    email: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    phone: ''
   })
 
-  const { Email, Password, FirstName, LastName, Phone } = state;
+  const { email, password, firstname, lastname, phone } = state;
   const [loginSpinner, setSpinner] = useState(true)
 
   useEffect(() => {
@@ -56,9 +59,23 @@ const Register = props => {
   }
 
   const handleSubmit = event => {
-    setSpinner(false)
     event.preventDefault();
-    //axios post and then redirect to signup
+    axios
+      .post(`${process.env.REACT_APP_API}/signup`, state)
+      .then(response => {
+        if (response.status == 200) {
+          alert('Registered Successfully!')
+          history.push({
+            pathname: `/`,
+          });
+        }
+        else {
+          alert('Could not register! Please try again')
+        }
+      })
+      .catch(error => {
+        alert('Could not register! Please try again')
+      });
   };
   const classes = useStyles();
 
@@ -75,11 +92,11 @@ const Register = props => {
               id="outlined"
               label="First Name"
               required={true}
-              onChange={handleChange('FirstName')}
+              onChange={handleChange('firstname')}
               type="text"
               fullWidth
               isRequired="true"
-              value={FirstName}
+              value={firstname}
               InputLabelProps={{
                 fontSize: 80
               }}
@@ -90,14 +107,13 @@ const Register = props => {
               id="outlined"
               required
               label="Last Name"
-              onChange={handleChange}
               type="text"
               fullWidth
-              value={LastName}
+              value={lastname}
               InputLabelProps={{
                 fontSize: 30
               }}
-              onChange={handleChange('LastName')}
+              onChange={handleChange('lastname')}
             />
             <TextField
               variant="outlined"
@@ -105,28 +121,26 @@ const Register = props => {
               id="outlined"
               label="Email"
               required
-              onChange={handleChange}
               type="text"
               fullWidth
-              value={Email}
+              value={email}
               InputLabelProps={{
                 fontSize: 50
               }}
-              onChange={handleChange('Email')} />
+              onChange={handleChange('email')} />
             <TextField
               variant="outlined"
               margin="normal"
               id="outlined"
               required
               label="Phone"
-              onChange={handleChange}
               type="text"
               fullWidth
-              value={Phone}
+              value={phone}
               InputLabelProps={{
                 fontSize: 50
               }}
-              onChange={handleChange('Phone')} />
+              onChange={handleChange('phone')} />
             <TextField
               required
               variant="outlined"
@@ -136,8 +150,8 @@ const Register = props => {
               label="Password"
               type="password"
               id="password"
-              value={Password}
-              onChange={handleChange('Password')}
+              value={password}
+              onChange={handleChange('password')}
             />
             <div class="d-flex align-items-center">
               <Button
@@ -149,7 +163,6 @@ const Register = props => {
               >
                 Register
             </Button>
-              <Spinner style={{ marginLeft: '2em', color: 'black' }} hidden={loginSpinner} animation="border" />
             </div>
           </form>
         </div>
