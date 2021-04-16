@@ -33,16 +33,28 @@ const SearchJob = (props) => {
   }, []);
 
   const [state, setState] = useState({
-    applications: "",
+    jobOpenings: [],
+    filter: {
+      companyID: "",
+      salary: {
+        min: "",
+        max: ""
+      },
+      yearsOfExp: {
+        min: 0,
+        max: 30
+      },
+      location: ""
+    }
   });
 
-  var year = {
-    min: 0,
-    max: 30,
-    step: 1,
-    value: { min: 3, max: 15 },
+  const onChangeYears = data => {
+    const filters = { ...filter };
+    filters.yearsOfExp = data;
+    setState({ ...state, filter: filters })
   };
-  const { applications } = state;
+
+  const { jobOpenings, filter } = state;
   return (
     <body style={{ backgroundColor: "#1f1e2e", color: "#f0ece2cc" }}>
       <Nav></Nav>
@@ -82,7 +94,7 @@ const SearchJob = (props) => {
             <Form.Group as={Col} md="3" style={{ marginRight: "1vw" }}>
               <Form.Label>Years of Experience</Form.Label>
               <br></br>
-              <Slider data={year} />
+              <Slider data={filter ? filter.yearsOfExp : null} onChange={onChangeYears} />
             </Form.Group>
             <Form.Group as={Col} md="3" style={{ marginRight: "0.5vw" }}>
               <Form.Label>Annual Salary</Form.Label>

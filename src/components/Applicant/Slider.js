@@ -11,14 +11,14 @@ class Slider extends React.Component {
     });
   }
   render() {
-    const { min, max, step, value } = this.props.data;
+    const value = this.props.data;
     return (
       <div className="slider">
         <InputRange
-          minValue={min}
-          maxValue={max}
-          step={step}
-          onChange={this.onChange}
+          minValue={1}
+          maxValue={30}
+          step={1}
+          onChange={this.props.onChange}
           value={value}
         />
       </div>
