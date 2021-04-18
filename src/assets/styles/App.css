@@ -285,3 +285,62 @@ input::-webkit-inner-spin-button {
     bottom: 100%;
   }
 }
+
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #028090 0%,
+    #00bfb2 51%,
+    #028090 100%
+  );
+}
+.btn-grad {
+  text-align: center;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 10px;
+  display: block;
+  border: none;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+.jobCard {
+  background-color: #272a3d;
+  width: 16rem;
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-top: 1vw;
+  border-radius: 1em;
+}
+.carddeck {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  justify-content: left;
+}
+
+.noborder {
+  border-top: none;
+}
+
+.applyCard {
+  width: 60vw;
+  margin-left: 17vw;
+}
+
+.skill {
+  margin-right: 2vw;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 20px;
+  background-image: linear-gradient(315deg, #9966cc 0%, #9966cc 50%);
+  color: white;
+  margin-top: 0.5vw;
+}

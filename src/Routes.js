@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ApplicantDashboard from './components/Applicant/applicantDashboard';
 import ApplicantLogin from './components/Applicant/applicantlogin';
 import ApplicantProfile from './components/Applicant/ApplicantProfile';
+import ApplyJob from './components/Applicant/ApplyJob';
 import Register from './components/Applicant/register';
 import SearchJob from './components/Applicant/SearchJobs';
 import Login from './components/login';
@@ -16,6 +17,7 @@ const Routes = props => {
         <Route path="/ApplicantDashboard" exact component={ApplicantDashboard} />
         <Route path="/ApplicantProfile/:page" exact component={ApplicantProfile} />
         <Route path="/SearchJob" exact component={SearchJob} />
+        <Route path="/JobDetails/:id" exact component={ApplyJob} />
       </Switch>
     </BrowserRouter>
   )
