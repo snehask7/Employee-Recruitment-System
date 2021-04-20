@@ -52,7 +52,7 @@ const Nav = props => {
           </Link>
         </MenuItem>
         <MenuItem>
-          <Link style={{ color: 'white' }} to="/SearchJobs">
+          <Link style={{ color: 'white' }} to="/SearchJob">
             <MdSearch
               size={26}
               style={{ marginLeft: "2px", marginRight: "1em" }}
@@ -61,12 +61,14 @@ const Nav = props => {
           </Link>
         </MenuItem>
         <MenuItem>
-          <RiProfileLine
-            onClick={() => collapse()}
-            size={26}
-            style={{ marginLeft: "2px", marginRight: "1em" }}
-          ></RiProfileLine>
+          <Link style={{ color: 'white' }} to="/ViewApplications">
+            <RiProfileLine
+              onClick={() => collapse()}
+              size={26}
+              style={{ marginLeft: "2px", marginRight: "1em" }}
+            ></RiProfileLine>
           View Applications
+          </Link>
         </MenuItem>
         <MenuItem>
           <Link style={{ color: 'white' }} to="/ApplicantProfile/EditProfile">

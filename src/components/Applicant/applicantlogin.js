@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { Link } from 'react-router-dom';
-import '../assets/styles/Login.css';
+import '../../assets/styles/Login.css';
 const Login = props => {
 
   const useStyles = makeStyles((theme) => ({

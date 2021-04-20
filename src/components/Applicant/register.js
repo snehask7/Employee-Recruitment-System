@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import '../assets/styles/Login.css';
+import '../../assets/styles/Login.css';
 
 const Register = props => {
   let history = useHistory();
