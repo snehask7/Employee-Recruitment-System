@@ -2,12 +2,17 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import axios from "axios";
 import Cookies from "js-cookie";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
 import Chart from "react-google-charts";
+import { useHistory } from "react-router-dom";
+import { ReactSmartScroller } from "react-smart-scroller";
 import Nav from "./ApplicantNav";
 
 const Dashboard = (props) => {
+  let history = useHistory();
+
   function pieChart(appl) {
     var chart = {};
     var month = [];
@@ -51,15 +56,24 @@ const Dashboard = (props) => {
           pieChart(obj1.data);
           var initial = 0;
           var interview = 0;
+          var interviewAppl = [];
+          var offerAppl = [];
           for (var x in obj1.data) {
             if (obj1.data[x].interviewStatus === "Not Scheduled") initial++;
-            else if (obj1.data[x].interviewStatus === "Scheduled") interview++;
+            else if (obj1.data[x].interviewStatus === "Scheduled") {
+              interview++;
+              interviewAppl.push(obj1.data[x]);
+            } else if (obj1.data[x].jobStatus === "Offered") {
+              offerAppl.push(obj1.data[x]);
+            }
           }
           setState({
             ...state,
             applications: obj1.data,
             initialCount: initial,
             interviewCount: interview,
+            interviewApplications: interviewAppl,
+            offerApplications: offerAppl,
           });
         })
       )
@@ -72,14 +86,42 @@ const Dashboard = (props) => {
     var userID = Cookies.get("userID");
     fetchData(userID);
   }, []);
+  const renderAppl = () => {
+    return applications.map((appl, index) => (
+      <div
+        style={{
+          borderRadius: "1em",
+          border: "1px solid #dddddd",
+          padding: "1vw",
+          marginBottom: "1vw",
+        }}
+        onClick={() => {
+          history.push(`/JobDetails/${appl.jobID._id}`);
+        }}
+      >
+        <h6>
+          {appl.jobID.jobTitle + " at " + appl.jobID.companyID.companyName}
+        </h6>
+      </div>
+    ));
+  };
 
   const [state, setState] = useState({
     applications: [],
     initialCount: 0,
     interviewCount: 0,
     chartarr: [["Month", "Applications"]],
+    interviewApplications: [],
+    offerApplications: [],
   });
-  const { applications, initialCount, interviewCount, chartarr } = state;
+  const {
+    applications,
+    initialCount,
+    interviewCount,
+    chartarr,
+    interviewApplications,
+    offerApplications,
+  } = state;
   return (
     <body style={{ backgroundColor: "#1f1e2e", color: "#f0ece2cc" }}>
       <Nav></Nav>
@@ -113,18 +155,13 @@ const Dashboard = (props) => {
                   </Card.Title>
                   <hr></hr>
                   <Card.Text>
-                    {console.log(applications)}
-                    {applications.map(function (appl, index) {
-                      return (
-                        <div>
-                          <h6>{appl.jobID.jobTitle}</h6>
-                          <p>{appl.jobID.companyID.companyName}</p>
-                        </div>
-                      );
-                    })}
-                    {applications.length === 0 ? (
-                      <h4>No jobs applied yet!</h4>
-                    ) : null}
+                    {applications == [] ? (
+                      <h4>No Applications yet!</h4>
+                    ) : (
+                      <ReactSmartScroller vertical style={{ height: "25vw" }}>
+                        {renderAppl()}
+                      </ReactSmartScroller>
+                    )}
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -141,24 +178,54 @@ const Dashboard = (props) => {
                 <Card.Body>
                   <Card.Title>
                     <h3>Upcoming Interviews</h3>
+                    <hr></hr>
                   </Card.Title>
-                  <Card.Text style={{ marginTop: "2em" }}>
+                  {interviewApplications.length == 0 ? (
+                    <h6>No interviews coming up!</h6>
+                  ) : (
                     <Splide
                       options={{
                         type: "loop",
-                        gap: "1rem",
                         autoplay: true,
                         pauseOnHover: false,
                         resetProgress: false,
-                        arrows: "slider",
                       }}
                     >
-                      <SplideSlide>
-                      </SplideSlide>
-                      <SplideSlide>
-                      </SplideSlide>
+                      {interviewApplications.map((appl, id) => {
+                        return (
+                          <SplideSlide>
+                            {" "}
+                            <Card
+                              className="intCard"
+                              onClick={() => {
+                                history.push(`/JobDetails/${appl.jobID._id}`);
+                              }}
+                            >
+                              <Card.Body>
+                                {appl.jobID.jobTitle +
+                                  " at " +
+                                  appl.jobID.companyID.companyName}
+                                <br></br>
+                                Interview Date:&nbsp;&nbsp;
+                                {moment(appl.interviewID.date).format(
+                                  "DD/MM/YY"
+                                )}
+                                <br></br>
+                                Time:&nbsp;&nbsp;
+                                {moment(appl.interviewID.date).format(
+                                  "hh:mm A"
+                                )}
+                                <br></br>
+                                <a href={appl.interviewID.meetingLink}>
+                                  {appl.interviewID.meetingLink}
+                                </a>
+                              </Card.Body>
+                            </Card>
+                          </SplideSlide>
+                        );
+                      })}
                     </Splide>
-                  </Card.Text>
+                  )}
                 </Card.Body>
               </Card>
               <Card
@@ -171,23 +238,42 @@ const Dashboard = (props) => {
                 <Card.Body>
                   <Card.Title>
                     <h3>Offers Received</h3>
+                    <hr></hr>
                   </Card.Title>
-                  <Card.Text style={{ marginTop: "2em" }}>
-                    <Splide
-                      options={{
-                        type: "loop",
-                        gap: "1rem",
-                        autoplay: true,
-                        pauseOnHover: false,
-                        resetProgress: false,
-                        arrows: "slider",
-                      }}
-                    >
-                      <SplideSlide>
-                      </SplideSlide>
-                      <SplideSlide>
-                      </SplideSlide>
-                    </Splide>
+                  <Card.Text>
+                    {offerApplications.length == 0 ? (
+                      <h6>No offers yet</h6>
+                    ) : (
+                      <Splide
+                        options={{
+                          type: "loop",
+                          gap: "1rem",
+                          autoplay: true,
+                          pauseOnHover: false,
+                          resetProgress: false,
+                          arrows: "slider",
+                        }}
+                      >
+                        {offerApplications.map((appl, id) => {
+                          return (
+                            <SplideSlide>
+                              {" "}
+                              <Card className="intCard">
+                                <Card.Body>
+                                  <Card.Title style={{ color: "#9966cc" }}>
+                                    {appl.jobID.companyID.companyName +
+                                      " " +
+                                      appl.jobID.location}
+                                    <br></br>
+                                  </Card.Title>
+                                  <p>{appl.jobID.jobTitle}</p>
+                                </Card.Body>
+                              </Card>
+                            </SplideSlide>
+                          );
+                        })}
+                      </Splide>
+                    )}
                   </Card.Text>
                 </Card.Body>
               </Card>

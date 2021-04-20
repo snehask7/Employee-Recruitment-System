@@ -344,3 +344,20 @@ input::-webkit-inner-spin-button {
   color: white;
   margin-top: 0.5vw;
 }
+
+.applCard {
+  background-color: #272a3d;
+  width: 24rem;
+  margin-left: 1em;
+  margin-right: 2em;
+  margin-top: 1vw;
+  border-radius: 1em;
+}
+
+.intCard {
+  background-color: #272a3d;
+  width: 22rem;
+  margin-left: 2em;
+  margin-right: 2em;
+  border-radius: 1em;
+}

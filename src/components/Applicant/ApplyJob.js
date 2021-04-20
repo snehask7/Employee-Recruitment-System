@@ -14,6 +14,7 @@ import Nav from "./ApplicantNav";
 const SearchJob = (props) => {
   const [job, setJob] = useState();
   const [skills, setSkills] = useState([]);
+  const [apply, setApply] = useState(true);
 
   const fetchJob = () => {
     axios
@@ -23,8 +24,6 @@ const SearchJob = (props) => {
       .then((response) => {
         if (response.status == 200) {
           setJob(response.data);
-          console.log(response.data.skillset);
-          console.log(response.data);
           setSkills(response.data.skillset.split(","));
         } else {
           alert("Could not retrieve job!");
@@ -35,27 +34,74 @@ const SearchJob = (props) => {
       });
   };
 
+  const sendEmail = () => {
+    var userID = Cookies.get("userID");
+    axios
+      .all([
+        axios.get(`${process.env.REACT_APP_API}/getApplicantProfile/${userID}`),
+        axios.get(`${process.env.REACT_APP_API}/getProfile/${userID}`),
+      ])
+      .then(
+        axios.spread((obj1, obj2) => {
+          var user = obj2.data;
+          var applicant = obj1.data;
+          axios
+            .post(`${process.env.REACT_APP_API}/applicationEmail`, {
+              user,
+              applicant,
+              job,
+            })
+            .then((response) => {
+              console.log("email sent");
+            })
+            .catch((error) => {
+              console.log("email could not be sent");
+            });
+        })
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const applyJob = () => {
-    var application = {}
-    application.jobID = props.match.params.id
+    var application = {};
+    application.jobID = props.match.params.id;
     application.applicantID = Cookies.get("userID");
     axios
       .post(`${process.env.REACT_APP_API}/applyJob`, application)
       .then((response) => {
         if (response.status == 200) {
-          alert("Application Successful")
+          alert("Application Successful");
+          sendEmail();
         } else {
           alert("Could not apply!");
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         alert("Could not apply!");
       });
   };
+  function checkIfApplied() {
+    var userID = Cookies.get("userID");
+    axios
+      .get(`${process.env.REACT_APP_API}/getApplicationStatus/${userID}`)
+      .then((response) => {
+        var apply = true;
+        for (var x in response.data) {
+          if (response.data[x].jobID._id === props.match.params.id)
+            apply = false;
+        }
+        setApply(apply);
+      })
+      .catch((error) => {
+        alert("Could not load job! Please try again");
+      });
+  }
 
   useEffect(() => {
     fetchJob();
+    checkIfApplied();
   }, []);
 
   return (
@@ -146,9 +192,15 @@ const SearchJob = (props) => {
                     })}
                   </Row>
                   <br></br>
-                  <div className="centerItems" onClick={() => applyJob()}>
-                    <Button className="btn-grad">Apply Job</Button>
-                  </div>
+                  {apply ? (
+                    <div className="centerItems" onClick={() => applyJob()}>
+                      <Button className="btn-grad">Apply Job</Button>
+                    </div>
+                  ) : (
+                    <div className="centerItems">
+                      <h5>You have already applied for this job</h5>
+                    </div>
+                  )}
                 </div>
               </>
             ) : null}
