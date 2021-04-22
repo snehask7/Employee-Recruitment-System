@@ -361,3 +361,7 @@ input::-webkit-inner-spin-button {
   margin-right: 2em;
   border-radius: 1em;
 }
+
+.interview {
+  background-color: #272a3d;
+}

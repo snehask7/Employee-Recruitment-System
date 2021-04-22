@@ -7,7 +7,9 @@ import ApplyJob from './components/Applicant/ApplyJob';
 import Register from './components/Applicant/register';
 import SearchJob from './components/Applicant/SearchJobs';
 import ViewApplications from './components/Applicant/ViewApplications';
+import InterviewerDashboard from './components/Interviewer/InterviewerDashboard';
 import Login from './components/login';
+
 const Routes = props => {
   return (
     <BrowserRouter>
@@ -20,6 +22,7 @@ const Routes = props => {
         <Route path="/SearchJob" exact component={SearchJob} />
         <Route path="/ViewApplications" exact component={ViewApplications} />
         <Route path="/JobDetails/:id" exact component={ApplyJob} />
+        <Route path="/InterviewerDashboard" exact component={InterviewerDashboard} />
       </Switch>
     </BrowserRouter>
   )

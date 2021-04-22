@@ -41,6 +41,7 @@
     "rc-datepicker": "^5.0.15",
     "rc-datetime-picker": "^1.6.1",
     "react": "^16.13.1",
+    "react-big-calendar": "^0.33.2",
     "react-bootstrap": "^1.0.0",
     "react-bootstrap-date-picker": "^5.1.0",
     "react-card-flip": "^1.0.11",
