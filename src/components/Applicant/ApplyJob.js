@@ -15,6 +15,7 @@ const SearchJob = (props) => {
   const [job, setJob] = useState();
   const [skills, setSkills] = useState([]);
   const [apply, setApply] = useState(true);
+  const [disableSubmit, setDisableSubmit] = useState(false);
 
   const fetchJob = () => {
     axios
@@ -52,10 +53,11 @@ const SearchJob = (props) => {
               job,
             })
             .then((response) => {
-              console.log("email sent");
+              window.location.reload()
             })
             .catch((error) => {
               console.log("email could not be sent");
+              window.location.reload()
             });
         })
       )
@@ -65,6 +67,7 @@ const SearchJob = (props) => {
   };
   const applyJob = () => {
     var application = {};
+    setDisableSubmit(true);
     application.jobID = props.match.params.id;
     application.applicantID = Cookies.get("userID");
     axios
@@ -75,11 +78,13 @@ const SearchJob = (props) => {
           sendEmail();
         } else {
           alert("Could not apply!");
+          setDisableSubmit(false);
         }
       })
       .catch((error) => {
         console.log(error);
         alert("Could not apply!");
+        setDisableSubmit(false);
       });
   };
   function checkIfApplied() {
@@ -194,7 +199,7 @@ const SearchJob = (props) => {
                   <br></br>
                   {apply ? (
                     <div className="centerItems" onClick={() => applyJob()}>
-                      <Button className="btn-grad">Apply Job</Button>
+                      <Button className="btn-grad" disabled={disableSubmit}>Apply Job</Button>
                     </div>
                   ) : (
                     <div className="centerItems">

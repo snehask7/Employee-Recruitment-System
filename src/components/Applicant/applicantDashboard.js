@@ -88,12 +88,13 @@ const Dashboard = (props) => {
   }, []);
   const renderAppl = () => {
     return applications.map((appl, index) => (
-      <div
+      <Card
         style={{
           borderRadius: "1em",
-          border: "1px solid #dddddd",
           padding: "1vw",
           marginBottom: "1vw",
+          color: "black",
+          textAlign: "center",
         }}
         onClick={() => {
           history.push(`/JobDetails/${appl.jobID._id}`);
@@ -102,7 +103,7 @@ const Dashboard = (props) => {
         <h6>
           {appl.jobID.jobTitle + " at " + appl.jobID.companyID.companyName}
         </h6>
-      </div>
+      </Card>
     ));
   };
 
@@ -158,10 +159,11 @@ const Dashboard = (props) => {
                     {applications == [] ? (
                       <h4>No Applications yet!</h4>
                     ) : (
-                      <ReactSmartScroller vertical style={{ height: "25vw" }}>
+                      <ReactSmartScroller vertical style={{ height: "27vw" }}>
                         {renderAppl()}
                       </ReactSmartScroller>
                     )}
+
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -216,7 +218,10 @@ const Dashboard = (props) => {
                                   "hh:mm A"
                                 )}
                                 <br></br>
-                                <a href={appl.interviewID.meetingLink}>
+                                <a
+                                  target="_blank"
+                                  href={appl.interviewID.meetingLink}
+                                >
                                   {appl.interviewID.meetingLink}
                                 </a>
                               </Card.Body>
@@ -304,6 +309,7 @@ const Dashboard = (props) => {
                         height: 280,
                         chartArea: { width: "80%", height: "80%" },
                         backgroundColor: "#272a3d",
+                        colors: ["#e73968", "#4f34f4", "#4E83FE", "#0eb078"],
                       }}
                     />
                   </Card.Text>
@@ -312,12 +318,7 @@ const Dashboard = (props) => {
               <Row>
                 <Col>
                   <Card
-                    style={{
-                      backgroundColor: "#272a3d",
-                      textAlign: "center",
-                      height: "10.25vw",
-                      width: "12vw",
-                    }}
+                    className="card1"
                   >
                     <Card.Body>
                       <h1 style={{ fontSize: "3em" }}>{initialCount}</h1>
@@ -330,12 +331,7 @@ const Dashboard = (props) => {
                 </Col>
                 <Col>
                   <Card
-                    style={{
-                      backgroundColor: "#272a3d",
-                      textAlign: "center",
-                      height: "10.25vw",
-                      width: "12vw",
-                    }}
+                    className="card1"
                   >
                     <Card.Body>
                       <h1 style={{ fontSize: "3em" }}>{interviewCount}</h1>
