@@ -364,4 +364,19 @@ input::-webkit-inner-spin-button {
 
 .interview {
   background-color: #272a3d;
+  width: 20rem;
+  margin-left: 1em;
+  border-radius: 1em;
+  color: white;
+}
+
+.interviewDetailsCard {
+  min-height: "40vw";
+  margin-left: 2vw;
+  padding-left: 3em;
+  padding-right: 3em;
+  padding-bottom: 2em;
+  padding-top: 2em;
+  border-radius: 1em;
+  margin-top: 4em;
 }

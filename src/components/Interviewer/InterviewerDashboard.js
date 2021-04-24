@@ -5,25 +5,10 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/sass/styles.scss";
-import { Card, Col, Row } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Button, Card, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../../assets/styles/App.css";
 import Nav from "./InterviewerNav";
-// const events = [
-
-// {
-//   title: "Technical Interview",
-//   allDay: true,
-//   start: new Date(2021, 3, 18),
-//   end: new Date(2021, 3, 18),
-// },
-//   {
-//     title: "DTS STARTS",
-//     start: new Date(2021, 3, 5),
-//     end: new Date(2021, 3, 5),
-//   },
-// ];
-
 const Dashboard = (props) => {
   const [state, setState] = useState({
     interviews: [],
@@ -32,7 +17,6 @@ const Dashboard = (props) => {
   });
   const { interviews, events, currInterview } = state;
 
-  let history = useHistory();
   const localizer = momentLocalizer(moment);
   function onEventClick(event) {
     console.log(event);
@@ -45,9 +29,9 @@ const Dashboard = (props) => {
       .get(`${process.env.REACT_APP_API}/getInterviews/${userID}`)
       .then((response) => {
         if (response.status == 200) {
-          console.log(response.data);
           setState({ ...state, interviews: response.data });
           createCalendar(response.data);
+          localStorage.setItem("interviews", JSON.stringify(response.data));
         } else {
           alert("Could not retrieve interviews!");
         }
@@ -60,7 +44,6 @@ const Dashboard = (props) => {
 
   function createCalendar(interviews) {
     var eventsarr = [];
-    console.log(interviews);
     for (var x in interviews) {
       var interview = {
         title: "Interview",
@@ -71,7 +54,6 @@ const Dashboard = (props) => {
       };
       eventsarr.push(interview);
     }
-    console.log(eventsarr);
     setState({ ...state, events: eventsarr });
   }
 
@@ -86,54 +68,74 @@ const Dashboard = (props) => {
         style={{
           marginTop: "2em",
           marginBottom: "3em",
+          marginLeft: "8vw",
         }}
       >
         <h2 style={{ textAlign: "center" }}>
           &nbsp;&nbsp;Welcome{" "}
           {Cookies.get("firstname") + " " + Cookies.get("lastname")}
         </h2>
-        <div
-          style={{ marginLeft: "10vw", marginRight: "3vw", marginTop: "1vw" }}
-        >
+        <div style={{ marginTop: "1vw" }}>
           <hr></hr>
 
           <Row style={{ marginTop: "2vw" }}>
             <Col>
-              <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: 600, width: 900 }}
-                views={["month"]}
-                selectable
-                onSelectEvent={(event) => onEventClick(event)}
-              // onSelectSlot={(slotInfo) => this.onSlotChange(slotInfo)}
-              />
+              <Card
+                style={{
+                  padding: "1em",
+                  backgroundColor: "white",
+                  color: "black",
+                }}
+              >
+                <Calendar
+                  localizer={localizer}
+                  events={events}
+                  startAccessor="start"
+                  endAccessor="end"
+                  style={{ height: 550, width: 800 }}
+                  views={["month"]}
+                  selectable
+                  onSelectEvent={(event) => onEventClick(event)}
+                // onSelectSlot={(slotInfo) => this.onSlotChange(slotInfo)}
+                />
+              </Card>
             </Col>
             <Col>
-              {currInterview ? (
-                <Card className="interview">
-                  <Card.Title>Interview Details</Card.Title>
+              <Card className="interview">
+                <Card.Title style={{ paddingTop: "1em", textAlign: "center" }}>
+                  Interview Details
+                </Card.Title>
+                <hr></hr>
+                {currInterview ? (
                   <Card.Body>
                     <p>
-                      <b>Interview Date:</b>
+                      <b style={{ color: "#9966cc" }}>Interview Date:</b>
                       &nbsp;&nbsp;
                       {moment(currInterview.resource.date).format("DD/MM/YY")}
                     </p>
                     <p>
-                      <b>Interview Time: </b>
+                      <b style={{ color: "#9966cc" }}>Interview Time: </b>
                       &nbsp;&nbsp;
                       {moment(currInterview.resource.date).format("hh:mm A")}
                     </p>
                     <p>
-                      <b>Link: </b>
+                      <b style={{ color: "#9966cc" }}>Link: </b>
                       &nbsp;&nbsp;
                       {currInterview.resource.meetingLink}
-                    </p>
+                    </p>                      <br></br>
+
+                    <div className="centerItems">
+                      <Link
+                        to={{
+                          pathname: `/InterviewDetails/${currInterview.resource._id}`,
+                        }}
+                      >
+                        <Button className="btn-grad">View Details</Button>
+                      </Link>
+                    </div>
                   </Card.Body>
-                </Card>
-              ) : null}
+                ) : <div className="centerItems"><p>Select an interview from the calendar</p></div>}
+              </Card>
             </Col>
           </Row>
         </div>
