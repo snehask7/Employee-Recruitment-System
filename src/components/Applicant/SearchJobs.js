@@ -30,6 +30,7 @@ const SearchJob = (props) => {
 
   const search = () => {
     var filterValues = {};
+    console.log(filter.companyID)
     if (filter.companyID) filterValues.companyID = filter.companyID;
     if (filter.location) filterValues.location = filter.location;
     filterValues.yearsOfExp = filter.yearsOfExp;
@@ -46,6 +47,7 @@ const SearchJob = (props) => {
         return;
       }
     }
+    console.log(filterValues)
     axios
       .post(`${process.env.REACT_APP_API}/searchJobs`, filterValues)
       .then((response) => {
@@ -79,8 +81,10 @@ const SearchJob = (props) => {
   };
 
   function handleChange(name, event) {
+    console.log(event.target)
     const filterValues = { ...filter };
     filterValues[name] = event.target.value;
+    console.log(filterValues)
     setState({ ...state, filter: filterValues });
   }
 
@@ -140,11 +144,12 @@ const SearchJob = (props) => {
               style={{ marginLeft: "2vw", marginRight: "0.5vw" }}
             >
               <Form.Label>Company</Form.Label>
-              <Form.Control size="sm" as="select">
+              <Form.Control size="sm" as="select" onChange={(event) => handleChange("companyID", event)}>
                 <option value={null}>Select Company</option>
+                {console.log(companies)}
                 {companies ? companies.map((c) => {
                   return (
-                    <option value={c.companyID}>{c.companyName}</option>
+                    < option value={c._id} > { c.companyName}</option>
                   )
                 }) : null}
               </Form.Control>
