@@ -4,20 +4,18 @@ import ApplicantDashboard from './components/Applicant/applicantDashboard';
 import ApplicantLogin from './components/Applicant/applicantlogin';
 import ApplicantProfile from './components/Applicant/ApplicantProfile';
 import ApplyJob from './components/Applicant/ApplyJob';
-import Register from './components/Applicant/register';
 import SearchJob from './components/Applicant/SearchJobs';
 import ViewApplications from './components/Applicant/ViewApplications';
+import CompanyLogin from './components/CompanyLogin';
 import InterviewDetails from './components/Interviewer/InterviewDetails';
 import InterviewerDashboard from './components/Interviewer/InterviewerDashboard';
-import Login from './components/login';
 
 const Routes = props => {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={ApplicantLogin} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
+        <Route path="/login" exact component={CompanyLogin} />
         <Route path="/ApplicantDashboard" exact component={ApplicantDashboard} />
         <Route path="/ApplicantProfile/:page" exact component={ApplicantProfile} />
         <Route path="/SearchJob" exact component={SearchJob} />
