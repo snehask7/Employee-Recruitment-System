@@ -36,7 +36,7 @@ A React.js front end for the Employee Recruitment System. <br /> Present in the 
 <br /><br />
 <img src="./screenshots/applicant/appl15.png" width="700">
 <br /><br />
-<img src="./screenshots/applicant/Ippl16.png" width="700">
+<img src="./screenshots/applicant/appl16.png" width="700">
 
 ### Interviewer Pages:
 <img src="./screenshots/hr/hr1.png" width="700">
