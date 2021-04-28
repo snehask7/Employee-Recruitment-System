@@ -97,7 +97,7 @@ const Dashboard = (props) => {
           textAlign: "center",
         }}
         onClick={() => {
-          history.push(`/JobDetails/${appl.jobID._id}`);
+          history.push(`/Applicant/JobDetails/${appl.jobID._id}`);
         }}
       >
         <h6>
@@ -200,7 +200,7 @@ const Dashboard = (props) => {
                             <Card
                               className="intCard"
                               onClick={() => {
-                                history.push(`/JobDetails/${appl.jobID._id}`);
+                                history.push(`/Applicant/JobDetails/${appl.jobID._id}`);
                               }}
                             >
                               <Card.Body>

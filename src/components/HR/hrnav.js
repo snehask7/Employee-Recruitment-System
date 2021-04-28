@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 import React, { useState } from "react";
-import { AiOutlinePoweroff } from "react-icons/ai";
-import { BsPersonSquare } from "react-icons/bs";
-import { MdHome, MdMenu, MdSearch } from "react-icons/md";
+import { AiOutlinePoweroff, AiOutlineEdit, AiFillSchedule, AiOutlineFileAdd, AiOutlineFileDone } from "react-icons/ai";
+import { BsPersonSquare, BsFileText } from "react-icons/bs";
+import { MdHome, MdMenu} from "react-icons/md";
 import { RiProfileLine } from "react-icons/ri";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -28,7 +28,7 @@ const Nav = props => {
   const { Collapsed } = state;
   return (
     <ProSidebar
-      style={{ color: 'white', backgroundImage: 'linear-gradient(to bottom, #fc5a8c, #fe4973, #fc3957, #f62d39, #ec2813)' }}
+      style={{ color: 'white',backgroundColor: '#2b3470' }}
       collapsed={Collapsed}
       collapsedWidth="81px"
       width="220px"
@@ -43,7 +43,7 @@ const Nav = props => {
         </MenuItem>
         <hr></hr>
         <MenuItem>
-          <Link style={{ color: 'white' }} to="/ApplicantDashboard">
+          <Link style={{ color: 'white' }} to="/hrDashboard">
             <MdHome
               size={28}
               style={{ marginLeft: "2px", marginRight: "1em" }}
@@ -52,34 +52,35 @@ const Nav = props => {
           </Link>
         </MenuItem>
         <MenuItem>
-          <Link style={{ color: 'white' }} to="/SearchJob">
-            <MdSearch
+          <Link style={{ color: 'white' }} to="/AddJob">
+            <AiOutlineFileAdd
               size={26}
               style={{ marginLeft: "2px", marginRight: "1em" }}
-            ></MdSearch>
-            Search for Jobs{" "}
+            ></AiOutlineFileAdd>
+            Add Job Opening{" "}
           </Link>
         </MenuItem>
         <MenuItem>
-          <Link style={{ color: 'white' }} to="/Applicant/ViewApplications">
-            <RiProfileLine
-              onClick={() => collapse()}
+          <Link style={{ color: 'white' }} to="/EditJob">
+            <AiOutlineEdit
               size={26}
               style={{ marginLeft: "2px", marginRight: "1em" }}
-            ></RiProfileLine>
+            ></AiOutlineEdit>
+            Edit Job Opening{" "}
+          </Link>
+        </MenuItem>
+
+        <MenuItem>
+          <Link style={{ color: 'white' }} to="/ViewApplications">
+          <RiProfileLine
+            onClick={() => collapse()}
+            size={26}
+            style={{ marginLeft: "2px", marginRight: "1em" }}
+          ></RiProfileLine>
           View Applications
           </Link>
         </MenuItem>
-        <MenuItem>
-          <Link style={{ color: 'white' }} to="/ApplicantProfile/EditProfile">
-            <BsPersonSquare
-              onClick={() => collapse()}
-              size={23}
-              style={{ marginLeft: "3px", marginRight: "1em" }}
-            ></BsPersonSquare>
-          &nbsp;Profile
-          </Link>
-        </MenuItem>
+
         <hr></hr>
         <MenuItem onClick={() => logout()}>
           <AiOutlinePoweroff

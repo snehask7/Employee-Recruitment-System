@@ -238,7 +238,7 @@ const SearchJob = (props) => {
                             <h6>{job.jobTitle}</h6>
                           </Card.Text>
                           <div className="centerItems">
-                            <Link to={`/JobDetails/${job._id}`}><Button className="btn-grad">View Job</Button></Link>
+                            <Link to={`/Applicant/JobDetails/${job._id}`}><Button className="btn-grad">View Job</Button></Link>
                           </div>
                         </Card.Body>
                       </Card>

@@ -72,7 +72,7 @@ const SearchJob = (props) => {
                     <Card className="applCard">
                       <Card.Body>
                         <Card.Title style={{ color: "#9966cc" }}>
-                          <Link to={`/JobDetails/${appl.jobID._id}`}>
+                          <Link to={`/Applicant/JobDetails/${appl.jobID._id}`}>
                             {appl.jobID.jobTitle +
                               " at " +
                               appl.jobID.companyID.companyName}
