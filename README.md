@@ -26,17 +26,17 @@ A React.js front end for the Employee Recruitment System. <br /> Present in the 
 ## Screenshots:
 
 ### Applicant Pages:
-<img src="./screenshots/applicant/Appl1.png" width="700">
+<img src="./screenshots/applicant/appl11.png" width="700">
 <br /><br />
-<img src="./screenshots/applicant/Appl2.png" width="700">
+<img src="./screenshots/applicant/appl12.png" width="700">
 <br /><br />
-<img src="./screenshots/applicant/Appl3.png" width="700">
+<img src="./screenshots/applicant/appl13.png" width="700">
 <br /><br />
-<img src="./screenshots/applicant/Appl4.png" width="700">
+<img src="./screenshots/applicant/appl14.png" width="700">
 <br /><br />
-<img src="./screenshots/applicant/Appl5.png" width="700">
+<img src="./screenshots/applicant/appl15.png" width="700">
 <br /><br />
-<img src="./screenshots/applicant/Appl6.png" width="700">
+<img src="./screenshots/applicant/Ippl16.png" width="700">
 
 ### Interviewer Pages:
 <img src="./screenshots/hr/hr1.png" width="700">
@@ -46,9 +46,9 @@ A React.js front end for the Employee Recruitment System. <br /> Present in the 
 <img src="./screenshots/hr/hr3.png" width="700">
 
 ### HR Pages:
-<img src="./screenshots/interviewer/int1.png" width="700">
+<img src="./screenshots/interviewer/Int11.png" width="700">
 <br /><br />
-<img src="./screenshots/interviewer/int2.png" width="700">
+<img src="./screenshots/interviewer/Int12.png" width="700">
 
 # Employee Recruitment System Backend:
 A backend for the Employee Recruitment System written in **TypeScript**. <br /> Uses MongoDB and Express.js. Implemented as a REST API. <br />
