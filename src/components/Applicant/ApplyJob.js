@@ -149,7 +149,7 @@ const SearchJob = (props) => {
                   style={{
                     color: "#BCBCBC",
                     width: "70%",
-                    marginLeft: "-0.5vw",
+                    marginLeft: "-0.5vw"
                   }}
                 >
                   <tr>

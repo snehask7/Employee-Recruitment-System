@@ -119,13 +119,13 @@
     width: 80%;
   }
 }
-Table,
+/* Table,
 tr,
 th {
   border: 1.5px white;
   border-collapse: collapse;
-}
-tr {
+} */
+/* tr {
   padding: 5px;
   text-align: left;
   font-size: 15px;
@@ -139,7 +139,7 @@ th {
   text-align: center;
   font-family: sans-serif;
   background-color: #272a3d;
-}
+} */
 .centerItems {
   display: flex;
   justify-content: center;

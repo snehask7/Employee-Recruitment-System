@@ -48,20 +48,6 @@
   text-decoration: none;
 }
 
-Table,
-tr,
-th {
-  border: 1.5px white;
-  border-collapse: collapse;
-}
-tr {
-  padding: 5px;
-  text-align: left;
-  font-size: 15px;
-  font-family: fantasy;
-  font-weight: bold;
-  background-color: #f8f8ff;
-}
 th {
   font-size: 16px;
   padding: 5px;
