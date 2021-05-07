@@ -1,10 +1,6 @@
 # Employee Recruitment System
 
-A full-stack web app to facilitate the job hiring process for companies and applicants.
-
-The project is divided into a dedicated REST Backend coded using TypeScript, Express and a cloud based MongoDB database. <br />The frontend is React.js based.
-
-Team 12 OOAD Mini Project Submission. <br />
+A full-stack web app to facilitate the job hiring process for companies and applicants. The project is divided into a dedicated REST Backend coded using TypeScript, Express and a cloud based MongoDB database. The frontend is React.js based. Team 12 OOAD Mini Project Submission.
 
 ## References:
 * [API Reference](https://app.swaggerhub.com/apis-docs/sid-sr/EmployeeRecruitmentAPI/1.0.0): Used the [OpenAPI](https://swagger.io/specification/) spec to document the API during development.
