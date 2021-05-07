@@ -1,14 +1,10 @@
 # Employee Recruitment System
 
-Team 12 **OOAD Mini Project Submission** (UCS 1617). <br />
 A full-stack web app to facilitate the job hiring process for companies and applicants.
 
-**Team:** <br />
-Siddharth Sriraman, 185001150 <br />
-Sneha Sriram Kannan, 185001157 <br />
-Sonali Ravishankar, 185001158 <br />
+The project is divided into a dedicated REST Backend coded using TypeScript, Express and a cloud based MongoDB database. <br />The frontend is React.js based.
 
-The project is divided into a dedicated **REST** Backend coded using **TypeScript** (object-oriented), **Express** and a cloud based **MongoDB** database. <br />The frontend is **React.js** based with **Axios** to carry out get and post calls to the backend.
+Team 12 OOAD Mini Project Submission. <br />
 
 ## References:
 * [API Reference](https://app.swaggerhub.com/apis-docs/sid-sr/EmployeeRecruitmentAPI/1.0.0): Used the [OpenAPI](https://swagger.io/specification/) spec to document the API during development.
